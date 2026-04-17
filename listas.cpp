@@ -1,116 +1,165 @@
 #include <iostream>
 using namespace std;
+#include <cstdlib>
+ // minha estrututura de dados.
+ struct teste{
+    int a; // valor que vamos guardar
+    struct teste *prox; // ponteiro *prox usadado para apontar para o começo meio e fim da lista.
+ };
+//avisando o c++ que essas serão as funçoes usadas.
+ struct teste * inserir(struct teste *q);
+ struct teste * remover(struct teste *q);
+ void listar(struct teste *q);
+ // programa principal
+ int main(){
+ // 'p' é o nosso ponteiro de INÍCIO.
+ struct teste *p =NULL; // ponteiro *p apontando para NULL, ou seja ainda não existe nada na lista.
+ int opcao; // variavél opcao, para ser usada como input para o switch
+ // while(true) ou seja loop infinito
+ while (true){
+ // menu de opçoes
+    cout<<"\nMenu de opções:"<<endl;
+    cout<<"(1) Inserir"<<endl;
+    cout<<"(2) Remover"<<endl;
+    cout<<"(3) listar"<<endl;
+    cout<<"(4) Sair"<<endl;
+    cout<<"Escolha: ";
+    cin>>opcao;
 
-struct teste{
-    int a;
-    struct teste *prox;
-};
-
-struct teste * inserir(struct teste *q);
-struct teste * remover(struct teste *q);
-void listar(struct teste *q);
-
-int main(){
-    struct teste *p = NULL;
-
-    int opcao;
-
-    while(true){
-        cout<<endl;
-        cout<<"Qual sua opcao? "<<endl;
-        cout<<"\t[1] Inserir\n\t[2] Remover\n\t[3] Listar\n\t[4] Sair"<<endl;
-        cin>>opcao;
-        switch(opcao){
-            case 1:
-                p = inserir(p);
-                break;
-            case 2:
-                p = remover(p);
-                break;
-            case 3:
-                listar(p);
-                break;
-            case 4:
-                return 0;
-            default:
-                continue;
-        }
+    switch (opcao){
+   case 1: //caso o usuario digite 1, a funcão (inserir) insere um elemento na lista, isso acontece por causa do ponteiro *p que aponta para o endereço do elemento.
+      p = inserir(p);
+        break;
+    case 2: //caso o usuario digite 1, a funcão (remover) remove um elemento na lista, isso acontece por causa do ponteiro *p que aponta para o endereço do elemento.
+        p = remover(p);
+        break;
+    case 3: //caso o usuario digite 1, a funcão (listar) lista os elementos da lista, isso acontece por causa do ponteiro *p que aponta para o endereço dos elementos.
+        listar(p);
+        break;
+    case 4: // caso digite 4, a aplicação fecha.
+       return 0; // bem aqui.
+    default:
+        continue;
     }
-}
 
-struct teste * inserir(struct teste *q){
-    struct teste *t, *aux;
-    t = (struct teste *) malloc(sizeof(struct teste));
+    }
+ }
+ //função inserir
+ struct teste * inserir(struct teste *q){
+ struct teste *t, *aux; //ponteiros da strutura 'teste'.
+      // aqui alocamos a memoria no novo nó, ou seja ponteiro *t.
+      t = (struct teste *) malloc(sizeof(struct teste));
 
-    if (!t){
-        cout<<"Nao tem memoria disponivel!"<<endl;
+       // aqui caso o malloc não exista, ou seja (!t) é por causa de memoria RAM insuficiente.
+       if (!t){
+        cout<<"Você não tem espaço animal!";
         return q;
-    }
 
-    cout<<"Comece a digitar..."<<endl;
-    cout<<"Qual o valor? ";
-    cin>>(t->a);
+       }
+       // aqui onde ele pede para o usuario digitar um valor
+       cout<<"Digite algum valor inteiro:";
+       // nesse 'cin>>' o ponteiro *t está apontando para a, ou seja t->a ele ta dizendo que aquele endereço é o de a, ou seja o que o usuario digitou.
+       cin>>(t->a);
+       // aqui o t->prox = NULL, ou seja t está apontando para o próximo, que é nulo, pois ainda não existe.
+       t->prox = NULL;
+       //caso a lista seja vazia, ou seja (!q) NÃO exista nenhum elemento nela.
+       if (!q){
+       cout<<"Primeiro elemento inserido!";
+       return t;// aqui t fica como primeiro da lista.
 
-    t->prox = NULL;
+       //caso a lista esteja com elementos
+       }else{
+       aux = q; // aqui guardamos o inicio da lista no ponteiro *aux para não perdermos ela
+       }
+       // aqui basicamente é enquanto existir próximo até cair em NULL, ou seja, não existir mais próximo
+       while (q->prox){
+        q = q->prox;
+       }
+       //aqui o ultimo elemento da lista aponta para o novo ponteiro *t
+       q ->prox = t;
 
-    if(!q){
-        cout<<"Insercao com sucesso!"<<endl;
-        return t;
-    } else {
-        aux = q;
+       cout<<"Valor inserido no final da lista!";
 
-        while(q->prox)
-            q = q->prox;
+       return aux; // Retornamos o ponteiro  *aux (o início da lista)
+ }
 
-        q->prox = t;
-    }
-
-    cout<<"Insercao com sucesso!"<<endl;
-    return aux;
-}
-
-void listar(struct teste *q){
-    if(!q){
-        cout<<"Nao ha numeros para listar!"<<endl;
+      //função de listar os elementos da lista
+       void listar(struct teste *q) {
+       // aqui verifica se a lista está vazia, ou seja, (!q) NÃO existe nehum elemento
+        if (!q) {
+        cout << "A lista esta vazia!" << endl;
         return;
     }
-    cout<<"Listando..."<<endl;
-    do{
-        cout<< q->a<<endl;
+
+       cout << "Elementos da lista:" << endl;
+    
+    do {
+    //Aqui dentro, eu chamo esse cara de q, então estou acessando q->a".
+        cout << " -> " << q->a << endl;
+
+        // e aqui ele fica apontando para o próximo até não existir mais próximo ou seja, NULL.
         q = q->prox;
-    } while(q);
-
-    return;
+        //aqui é a condição de parada, enquanto q!=NULL ele vai ficar listando os elementos
+    } while (q != NULL);
 }
-
-struct teste * remover(struct teste *q){
-    if(!q){
-        cout<<"Lista vazia!"<<endl;
+// funcão de remover elementos
+struct teste * remover(struct teste *q) {
+// aqui verifica se a lista está vazia, ou seja, (!q) NÃO existe nehum elemento
+    if (!q) {
+        cout << "Nada para remover!" << endl;
         return q;
     }
 
-    int valor;
-    cout<<"Qual valor quer remover?";
-    cin>>valor;
-    struct teste *t, *aux;
-    if ((q->a) == valor){
-        aux = q->prox;
-        free(q);
-        cout<<"Remocao com sucesso!"<<endl;
-        return aux;
+    int valor; //variavel 'valor' criada  para pegar o valor que o usuario deseja remover
+    cout<<"Qual valor deseja remover? ";
+    cin>>valor; // pega o valor que o usuario quer remover
+    struct teste *t, *aux; // qui fica os ponteiros que vão ser usados nessa função
+
+
+   //caso o valor esteja no PRIMEIRO nó ou seja no ponteiro *q
+    if ((q->a)==valor){
+       aux = q->prox; // aqui guardamos o próximo elemento para o ponteiro *aux
+       free(q); // aqui deletamos o primeiro elemento da memoria
+       cout << "Removido do inicio!" << endl;
+       return aux; // aqui retornamos o ponteiro *aux, ou seja ele é o PRIMEIRO agora.
     }
-    t = q->prox;
-    aux =q;
-    while(t){
-        if((t->a) == valor){
+    //caso ele esteja no meio ou no fim.
+    // o ponteiro *t será oq estamos testando, o ponteiro *aux será o anterior
+    t = q->prox;  // aqui ele começa pelo segundo, ou seja (meio)
+    aux = q; // aqui ele começa pelo inicio, como retornamos la encima.
+    
+
+    //aqui é enquanto t != NULL, ou seja, enquanto ele NÃO apontar para nada.
+    while (t != NULL) {
+    // Se encontramos o valor no ponteiro '*t'
+        if ((t->a) == valor) {
+        /*PULO DO GATO
+        t->prox é ponteiro que aponta para o endereço que vem DEPOIS do alvo, ou seja o que queremos remover.
+        aux->prox é o ponteiro do anterior, ou seja, do INICIO.
+        */
+        // aqui fazemos o ponteiro ANTEIRO o aux->prox, pular o 't' que vai ser removido, e segurar no proximo direto, que pode ser NULL.
             aux->prox = t->prox;
-            free(t);
-            cout<<"Remocao co sucesso!"<<endl;
-            return q;
+
+            free(t); //Agora que 't' está solto, podemos apagar da memória
+            cout << "Valor removido com sucesso!" << endl;
+            return q; //aqui retorna o inicio da lista
         }
-        aux = t;
+
+      /* aqui se não encontrou ainda, os dois dão um passo à frente:
+           O 'aux' vira o 't' atual, e o 't' vira o próximo que pode ser NULL */
+        aux = t; 
         t = t->prox;
     }
-    cout<<"Valor nao encontrado!"<<endl;
-    return q;
-}
+        cout << "Valor nao encontrado na lista!" << endl;
+        return q;
+    }
+
+       
+ 
+ 
+ 
+     
+       
+ 
+ 
+ 
