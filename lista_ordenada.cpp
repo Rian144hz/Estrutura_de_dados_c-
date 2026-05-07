@@ -6,6 +6,7 @@ using namespace std;
     int a; // valor que vamos guardar
     struct teste *prox; // ponteiro *prox usadado para apontar para o começo meio e fim da lista.
  };
+ 
 //avisando o c++ que essas serão as funçoes usadas.
  struct teste * inserir(struct teste *q);
  struct teste * remover(struct teste *q);
