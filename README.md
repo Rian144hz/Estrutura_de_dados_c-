@@ -108,7 +108,7 @@ void inserirInicio(Node*& head, int valor) {
 | 07 | Listas Encadeadas | ✅ Concluído |
 | 08 | Listas Duplamente encadeadas | ✅ Concluído |
 | 09 | pilhas com array, e com alocação dinamica de memória |✅ Concluído|
-| 09 | filas | ❌ Não concluído |
+| 09 | filas somente com array | ✅ concluído |
 
 ---
 
