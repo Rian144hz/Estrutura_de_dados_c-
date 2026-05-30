@@ -3,7 +3,7 @@
 using namespace std;
    
 char pilha[MAX];
-int topo = 0;
+int topo = 1;
 
 void push(void);
 void pop(void);
